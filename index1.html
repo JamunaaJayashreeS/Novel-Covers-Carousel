@@ -1,0 +1,223 @@
+<html>
+
+<head>
+  <style>
+    body {
+      margin: 0;
+      font-family: "Helvetica", sans-serif;
+      background-color: rgb(240, 240, 245);
+    }
+
+    h2 {
+      margin: 30px;
+    }
+
+
+    .wrapper {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 223px;
+      height: 350px;
+      overflow: hidden;
+      box-shadow: 0px 4px 25px -4px rgba(0, 0, 0, 1);
+      /* animation: ani 5s infinite ease-in-out; */
+      border-radius: 5px;
+    }
+
+    .allImages {
+      height: 100%;
+      transition: all 0.5s ease-in-out;
+    }
+
+    .imageWrapper {
+      width: 223px;
+      height: 350px;
+      float: left;
+      overflow: hidden;
+    }
+
+    img {
+      max-height: 100%;
+    }
+
+
+    @keyframes ani {
+      0% {
+        border-radius: 5%;
+      }
+
+      50% {
+        border-radius: 40%;
+      }
+
+      100% {
+        border-radius: 5%;
+      }
+
+    }
+
+    .buttons {
+      position: relative;
+      z-index: 10;
+      top: -200px;
+      display: flex;
+      width: 100%;
+      justify-content: space-between;
+    }
+
+    button {
+      background: black;
+      color: white;
+      padding: 5px 10px;
+      border: 0;
+      font-size: 15px;
+      cursor: pointer;
+      transition: all 0.4s ease-in-out;
+      outline: none;
+      border: 2px solid white;
+      margin: 0px 15px;
+    }
+
+    button:first-child {
+      transform: translateX(-80px);
+    }
+
+    button:nth-child(2) {
+      transform: translateX(80px);
+    }
+    #footer {
+   position:absolute;
+   text-align: center;
+   bottom:50;
+   width:100%;
+   height:60px;
+}
+
+    .wrapper:hover button {
+      transform: translateX(0px);
+    }
+  </style>
+</head>
+
+<body>
+
+
+  <br>
+  <div>
+    <p style="text-align: center;font-size: 30px;font-weight: 100;">Novel covers and description</p>
+  </div>
+  <div>
+    <p
+      style="display: flex; justify-content:center ;padding-right: 50px;padding-left: 50px;font-size: 15px;font-weight: 150;">
+      This chart lists the novel covers of the authors and a short description about each.
+    </p>
+  </div>
+  <div class="wrapper">
+
+    <!-- making them display in a line-->
+    <div class="allImages">
+
+      <!-- each image wrapper -->
+      <div class="imageWrapper">
+        <img src="https://github.com/JamunaaJayashreeS/JamunaaJayashreeS/blob/aacb4cca5645e36b5df632ef7d17dfbcc4a4f262/1.%20First%20edition;%20Alfred%20A.%20Knopf,%201987.jpeg?raw=true">
+      </div>
+      
+      <div class="imageWrapper">
+        <img src="https://github.com/JamunaaJayashreeS/JamunaaJayashreeS/blob/master/2.%20Alfred%20A.%20Knopf%2C%20bound%20by%20Bayntun-Riviere%2C%201987.jpg?raw=true">
+      </div>
+      <div class="imageWrapper">
+        <img src="https://github.com/JamunaaJayashreeS/JamunaaJayashreeS/blob/master/3.%20Plume%20Contemporary%20Fiction%2C%201988.jpg?raw=true">
+      </div>
+      <div class="imageWrapper">
+        <img
+          src="https://github.com/JamunaaJayashreeS/JamunaaJayashreeS/blob/master/4.%20Ediciones%20B%20(%5Baompain)%2C%201988.jpg?raw=true">
+      </div>
+    </div>
+
+    <div class="buttons">
+      <button> Back </button>
+      <button> Next </button>
+    </div>
+  </div>
+
+  <div id="footer">Short Description about each novel</div>
+
+  <script>// creating the width of the wrapper depending on the amount of images
+    window.addEventListener("load", function () {
+      document.querySelector(".allImages").style.width = (document.querySelector(".wrapper").clientWidth * document.querySelector(".allImages").children.length) + "px";
+    })
+
+    var AllImages = document.querySelector(".allImages");
+    var imageWidth = document.querySelector(".wrapper").clientWidth;
+    var BackBtn = document.querySelectorAll("button")[0];
+    var NextBtn = document.querySelectorAll("button")[1];
+    // the index value of current page
+    var i = 0;
+
+    //placeholder for our setInterval function
+    var timer = 0;
+
+    // start timer function
+    function Start() {
+
+      timer = setInterval(function () {
+        if (i < AllImages.children.length) {
+          i++;
+          AllImages.style.transform = "translateX(" + (-imageWidth * i) + "px)";
+          if (i >= AllImages.children.length) {
+            AllImages.style.transform = "translateX(0px)";
+            i = 0;
+          }
+        }
+      }, 4000);
+    }
+
+    // starting the timer
+    Start();
+
+    //stop the timer
+    function Stop() {
+      clearInterval(timer);
+    }
+
+    //Back button
+    BackBtn.addEventListener("click", function () {
+
+      //restarting the timer each time, so it begins the timer from the current page
+      Stop();
+      Start();
+
+      if (i < AllImages.children.length) {
+        i--;
+        AllImages.style.transform = "translateX(" + (-imageWidth * i) + "px)";
+      }
+
+      if (0 > i) {
+        i = AllImages.children.length - 1;
+        AllImages.style.transform = "translateX(" + (-imageWidth * i) + "px)";
+      }
+    })
+
+    // Next button
+    NextBtn.addEventListener("click", function () {
+
+      Stop();
+      Start();
+
+      if (i < AllImages.children.length) {
+        i++;
+        AllImages.style.transform = "translateX(" + (-imageWidth * i) + "px)";
+      }
+
+      if (i >= AllImages.children.length) {
+        AllImages.style.transform = "translateX(0px)";
+        i = 0;
+      }
+    })</script>
+    
+    
+</body>
+
+</html>
